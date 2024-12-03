@@ -38,4 +38,5 @@ const {
   <h2>error => {{ error }}</h2>
   <button @click="previous">Previous</button>
   <button @click="next">Next</button>
+  <RouterLink to="/login">Go to login page</RouterLink>
 </template>
