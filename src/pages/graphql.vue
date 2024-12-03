@@ -16,6 +16,7 @@ export const useProductsData = defineBasicLoader('/graphql', async (to) => {
 
 <script setup lang="ts">
 import {useRouteQuery} from "@/composables/router";
+import ProductsTable from "@/components/ProductsTable.vue";
 
 const currentPage = useRouteQuery<number>('page', {
   format: (v) => {
@@ -46,25 +47,10 @@ const {
   <button @click="previous">Previous</button>
   <button @click="next">Next</button>
   <h2 v-if="isLoading">Loading...</h2>
-  <table v-else>
-    <thead>
-      <tr>
-        <th>ID</th>
-        <th>Label</th>
-        <th>SKU</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr
-        v-for="product in products.data"
-        :key="product.id"
-      >
-        <td>{{ product.id }}</td>
-        <td>{{ product.label }}</td>
-        <td>{{ product.variants.paginatorInfo.total > 1 ? `${product.variants.paginatorInfo.total} variants` : product.variants.data[0].sku }}</td>
-      </tr>
-    </tbody>
-  </table>
+  <ProductsTable
+    v-else
+    :products="products.data"
+  />
 </template>
 
 <style scoped>
