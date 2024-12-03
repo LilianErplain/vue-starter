@@ -9,6 +9,7 @@ export const useUserData = defineBasicLoader('/', async (to) => {
 
 <script setup lang="ts">
 import {useRouteQuery} from "@/composables/router";
+
 const currentId = useRouteQuery<number>('id', {
   format: (v) => {
     const n = Number(v)

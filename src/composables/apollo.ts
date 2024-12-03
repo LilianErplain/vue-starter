@@ -3,26 +3,24 @@ import {
     createHttpLink,
     InMemoryCache,
 } from '@apollo/client/core'
-import {removeTypenameFromVariables} from "@apollo/client/link/remove-typename";
 
+interface HttpHeaders {
+    Authorization?: string
+    "Content-Type"?: string
+}
+
+// Build HTTP headers
 function getHeaders() {
-    const headers: { Authorization?: string; "Content-Type"?: string } = {};
+    const headers: HttpHeaders = {};
     const token = localStorage.getItem("access-token");
-    console.log(token)
-    if (token && token.length > 0) {
-        headers["Authorization"] = `Bearer ${token}`;
-    }
+    if (token && token.length > 0) headers["Authorization"] = `Bearer ${token}`
     headers["Content-Type"] = "application/json";
     return headers;
 }
 
-// const removeTypenameLink = removeTypenameFromVariables();
-// const link = from([removeTypenameLink, httpLink]);
-
 // HTTP connection to the API
 const httpLink = createHttpLink({
-    // You should use an absolute URL here
-    uri: 'https://localhost:51413/graphql',
+    uri: 'https://localhost:51413/graphql', // You should use an absolute URL here
     fetch: (uri: RequestInfo, options: RequestInit) => {
         options.headers = getHeaders();
         return fetch(uri, options);

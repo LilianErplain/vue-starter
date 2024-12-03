@@ -23,7 +23,7 @@ export async function authenticateOneUser () {
     }))
 }
 
-export async function getCurrentUser () {
+export function getCurrentUser () {
     return provideApolloClient(apolloClient)(() => useQuery(gql`
         query CurrentUserProfile {
             CurrentUserProfile {
@@ -39,4 +39,36 @@ export async function getCurrentUser () {
             }
         }
     `));
+}
+
+export function getProducts (page: number = 1) {
+    return provideApolloClient(apolloClient)(() => useQuery(gql`
+        query Products(
+            $where: QueryProductsWhereWhereConditions = { AND: [{ column: ACTIVE, operator: EQ, value: true }] }
+            $first: Int
+            $page: Int
+        ) {
+            Products(orderBy: [{ column: ID, order: ASC }], where: $where, first: $first, page: $page) {
+                paginatorInfo {
+                    total
+                }
+                data {
+                    id
+                    label
+                    variants {
+                        paginatorInfo {
+                            total
+                        }
+                        data {
+                            id
+                            sku
+                            on_hand
+                        }
+                    }
+                }
+            }
+        }
+    `, () => ({
+        page
+    })));
 }

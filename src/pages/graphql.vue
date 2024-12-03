@@ -1,41 +1,64 @@
 <script lang="ts">
 import {defineBasicLoader} from 'unplugin-vue-router/data-loaders/basic'
-import {authenticateOneUser} from "@/composables/api";
+import {getCurrentUser, getProducts} from "@/composables/api";
 
-export const useLogin = defineBasicLoader('/graphql', async (to) => {
-  localStorage.setItem("access-token", '')
-  const { mutate } = await authenticateOneUser()
-  const response = await mutate()
-  const token = response?.data?.Login
-  localStorage.setItem("access-token", token)
-  return token
+export const useProductsData = defineBasicLoader('/graphql', (to) => {
+  const { result, loading } = getProducts(Number(to.query.page))
+  return {
+    result: result.value,
+    loading: loading.value,
+  }
 })
 </script>
 
 <script setup lang="ts">
-import {authenticateOneUser, getCurrentUser} from "@/composables/api";
-import {ref} from "vue";
+import {useRouteQuery} from "@/composables/router";
+import {getCurrentUser} from "@/composables/api";
+import {computed} from "vue";
+
+const currentPage = useRouteQuery<number>('page', {
+  format: (v) => {
+    const n = Number(v)
+    return Number.isFinite(n) && n > 0 ? n : 1
+  },
+})
+function previous() {
+  currentPage.value--
+}
+function next() {
+  currentPage.value++
+}
+
+// const {
+//   result, // the data returned by the loader
+//   loading, // a boolean indicating if the loader is fetching data
+// } = getProducts(currentPage.value)
 
 const {
-  data: token,
-} = useLogin()
-
-const user = ref()
-const loading = ref(false)
-
-async function login () {
-  const currentUserResponse = await getCurrentUser()
-  loading.value = currentUserResponse.loading
-  user.value = currentUserResponse.result
-}
+  data
+} = useProductsData()
 </script>
 
 <template>
   <h1>GraphQL</h1>
-  <h2>token => {{ token }}</h2>
-  <button @click="login">
-    Get current user
-  </button>
-  <h2>user => {{ user }}</h2>
-  <h2>loading => {{ loading }}</h2>
+  <h2>loading => {{ data?.loading }}</h2>
+  <button @click="previous">Previous</button>
+  <button @click="next">Next</button>
+  <table v-if="!data?.loading">
+    <thead>
+      <th>
+        <td>Label</td>
+        <td>SKU</td>
+      </th>
+    </thead>
+    <tbody>
+      <tr
+        v-for="product in data.result?.Products.data"
+        :key="product.id"
+      >
+        <td>{{ product.label }}</td>
+        <td>{{ product.sku }}</td>
+      </tr>
+    </tbody>
+  </table>
 </template>
