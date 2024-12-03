@@ -1,19 +1,19 @@
 <script setup lang="ts">
 import {authenticateOneUser} from "@/composables/api";
-import {ref} from "vue";
 import {useRouter} from "vue-router";
 
 const router = useRouter()
 
-const loading = ref(false)
+const {
+  mutate, // Function to trigger the mutation manually
+  loading // A boolean indicating if the mutation is completed
+} = authenticateOneUser()
 
 async function login () {
   localStorage.setItem("access-token", '')
-  const { mutate: logUserIn, loading: loggingIn } = await authenticateOneUser()
-  const response = await logUserIn()
-  loading.value = loggingIn.value
-  localStorage.setItem("access-token", response?.data?.Login)
-  await router.push('/graphql')
+  const response = await mutate() // Trigger mutation
+  localStorage.setItem("access-token", response?.data?.Login) // Retrieve token and store it in local storage
+  await router.push('/graphql') // Redirect user to home page once logged in
 }
 </script>
 

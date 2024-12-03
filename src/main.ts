@@ -2,7 +2,7 @@ import './assets/main.css'
 import { createPinia } from 'pinia'
 import { createApp, provide, h } from 'vue'
 import { createRouter, createWebHistory } from 'vue-router'
-import { DataLoaderPlugin} from "unplugin-vue-router/runtime";
+import { DataLoaderPlugin } from "unplugin-vue-router/runtime";
 import { routes } from 'vue-router/auto-routes'
 import { DefaultApolloClient } from '@vue/apollo-composable'
 import { apolloClient } from "@/composables/apollo";

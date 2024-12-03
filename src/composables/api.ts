@@ -9,7 +9,7 @@ export async function getOneUser (id: string|number) {
     return await res.json()
 }
 
-export async function authenticateOneUser () {
+export function authenticateOneUser () {
     return provideApolloClient(apolloClient)(() => useMutation(LOGIN, {
         variables: {
             email: 'dev@erplain.app',

@@ -14,8 +14,6 @@ function getHeaders() {
     return headers;
 }
 
-
-
 // HTTP connection to the API
 const httpLink = createHttpLink({
     uri: import.meta.env.VITE_BACK_END_URL, // You should use an absolute URL here
