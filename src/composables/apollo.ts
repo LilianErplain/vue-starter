@@ -3,6 +3,7 @@ import {
     createHttpLink,
     InMemoryCache,
 } from '@apollo/client/core'
+import * as process from "node:process";
 
 // Build HTTP headers
 function getHeaders() {
@@ -17,7 +18,7 @@ function getHeaders() {
 
 // HTTP connection to the API
 const httpLink = createHttpLink({
-    uri: 'https://localhost:51413/graphql', // You should use an absolute URL here
+    uri: import.meta.env.VITE_BACK_END_URL, // You should use an absolute URL here
     fetch: (uri: RequestInfo, options: RequestInit) => {
         options.headers = getHeaders();
         return fetch(uri, options);
