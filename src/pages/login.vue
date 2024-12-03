@@ -11,7 +11,7 @@ async function login () {
   localStorage.setItem("access-token", '')
   const { mutate: logUserIn, loading: loggingIn } = await authenticateOneUser()
   const response = await logUserIn()
-  loading.value = loggingIn
+  loading.value = loggingIn.value
   localStorage.setItem("access-token", response?.data?.Login)
   await router.push('/graphql')
 }

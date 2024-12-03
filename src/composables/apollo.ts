@@ -4,19 +4,16 @@ import {
     InMemoryCache,
 } from '@apollo/client/core'
 
-interface HttpHeaders {
-    Authorization?: string
-    "Content-Type"?: string
-}
-
 // Build HTTP headers
 function getHeaders() {
-    const headers: HttpHeaders = {};
+    const headers: HeadersInit = {};
     const token = localStorage.getItem("access-token");
     if (token && token.length > 0) headers["Authorization"] = `Bearer ${token}`
     headers["Content-Type"] = "application/json";
     return headers;
 }
+
+
 
 // HTTP connection to the API
 const httpLink = createHttpLink({
