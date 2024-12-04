@@ -39,4 +39,21 @@ const {
   <button @click="previous">Previous</button>
   <button @click="next">Next</button>
   <RouterLink to="/login">Go to login page</RouterLink>
+  <hr>
+  <p>{{ $d(new Date(), 'custom', $i18n.locale) }}</p>
+  <div class="locale-changer">
+    <select v-model="$i18n.locale">
+      <option v-for="locale in $i18n.availableLocales" :key="`locale-${locale}`" :value="locale">{{ locale }}</option>
+    </select>
+  </div>
+  <hr>
+  {{ $route.meta.layout }}
+  <p>{{ $n(10000, 'currency', $i18n.locale) }}</p>
+  <p>{{ $n(10000, 'currency', $i18n.locale, { currency: 'EUR' }) }}</p>
+  <p>{{ $n(10000, 'currency', $i18n.locale, { useGrouping: false, currency: 'KRW'  }) }}</p>
+  <p>{{ $n(987654321, 'currency', $i18n.locale, { notation: 'compact', currency: 'CHF' }) }}</p>
+  <p>{{ $n(0.99123, 'percent', $i18n.locale) }}</p>
+  <p>{{ $n(0.99123, 'percent', $i18n.locale, { minimumFractionDigits: 2 }) }}</p>
+  <p>{{ $n(12.11612345, 'decimal', $i18n.locale) }}</p>
+  <p>{{ $n(12145281111, 'decimal', $i18n.locale, { minimumFractionDigits: 2 }) }}</p>
 </template>

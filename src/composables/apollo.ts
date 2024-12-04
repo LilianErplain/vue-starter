@@ -6,10 +6,10 @@ import {
 import * as process from "node:process";
 
 // Build HTTP headers
-function getHeaders() {
+function useHttpHeaders() {
     const headers: HeadersInit = {};
-    const token = localStorage.getItem("access-token");
-    if (token && token.length > 0) headers["Authorization"] = `Bearer ${token}`
+    const accessToken = localStorage.getItem("access-token");
+    if (accessToken && accessToken.length > 0) headers["Authorization"] = `Bearer ${accessToken}`
     headers["Content-Type"] = "application/json";
     return headers;
 }
@@ -18,7 +18,7 @@ function getHeaders() {
 const httpLink = createHttpLink({
     uri: import.meta.env.VITE_BACK_END_URL, // You should use an absolute URL here
     fetch: (uri: RequestInfo, options: RequestInit) => {
-        options.headers = getHeaders();
+        options.headers = useHttpHeaders();
         return fetch(uri, options);
     }
 })

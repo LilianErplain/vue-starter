@@ -18,7 +18,7 @@ async function login () {
 </script>
 
 <template>
-  <h1>Login</h1>
+  <h1>{{ $t('login') }}</h1>
   <h2>loading => {{ loading }}</h2>
   <button @click="login">
     Login
