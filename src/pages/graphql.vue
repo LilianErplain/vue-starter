@@ -1,7 +1,7 @@
 <script lang="ts">
 import {defineBasicLoader} from 'unplugin-vue-router/data-loaders/basic'
 import {apolloClient} from "@/composables/apollo";
-import {GET_PRODUCTS} from "@/composables/graphql";
+import {GET_PRODUCTS} from "@/composables/graphql/main";
 
 export const useProductsData = defineBasicLoader('/graphql', async (to) => {
   const response = await apolloClient.query({
@@ -15,8 +15,17 @@ export const useProductsData = defineBasicLoader('/graphql', async (to) => {
 </script>
 
 <script setup lang="ts">
+import {definePage} from "unplugin-vue-router/runtime";
 import {useRouteQuery} from "@/composables/router";
 import ProductsTable from "@/components/ProductsTable.vue";
+
+definePage({
+  name: 'graphql',
+  meta: {
+    layout: 'authenticated',
+    requiresAuth: true,
+  },
+});
 
 const currentPage = useRouteQuery<number>('page', {
   format: (v) => {

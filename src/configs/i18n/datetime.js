@@ -1,7 +1,5 @@
-import {Language} from "@/configs/i18n/i18n";
-
 export const datetimeFormats = {
-  [Language.ENGLISH]: {
+  'en': {
     short: {
       year: 'numeric', month: 'short', day: 'numeric'
     },
@@ -13,7 +11,7 @@ export const datetimeFormats = {
       year: 'numeric', month: 'long', day: 'numeric'
     }
   },
-  [Language.FRENCH]: {
+  'fr': {
     short: {
       year: 'numeric', month: 'short', day: 'numeric'
     },

@@ -25,6 +25,33 @@ VueRouter is configured through the [Unplugin Vue Router](https://uvr.esm.is/) p
 
 Just add your pages in the `src/pages` folder, and they will be automatically imported and added to the router.
 
+Several navigation guards are executed before each route update. They are defined in `src/composables/router.ts`.
+ - `useLayoutMiddleware`: Is used to load the page's layout. If no layout is specified for a page, it will load the default layout.
+ - `useAuthenticationMiddleware`: Is used to check if the user is authenticated. If not, the user will be redirected to the login page.
+
+## Page Meta
+
+Inside each page, we can use the `definePage` composable to specify the page's name, layout, permissions and 
+authentication requirements.
+
+```vue
+<script setup lang="ts">
+// src/pages/secret.vue
+// Note that the `definePage` composable must be called inside a `setup` script.
+import {definePage} from "unplugin-vue-router/runtime";
+
+definePage({
+  name: 'my-secret-page', // If no name is specified here, then the default name will be `/secret`
+  meta: {
+    layout: 'my-layout', // Will load a file named `my-layout.vue` inside the `layouts` folder
+    requiresAuth: true // If true, then the use must be logged in to access this page.
+  },
+});
+
+// ...
+</script>
+```
+
 ## Loading data in one page
 
 This app is using the [DataLoaderPlugin](https://uvr.esm.is/data-loaders/) plugin from `Unplugin Vue Router`. It allows 
@@ -32,7 +59,7 @@ to fetch data in a page. The data loader automatically runs when the route chang
 
 ```vue
 <script lang="ts">
-// ./src/pages/users/[id]/index.vue
+// src/pages/users/[id]/index.vue
 import { defineBasicLoader } from 'unplugin-vue-router/data-loaders/basic'
 import { getUserById } from '../api'
 
@@ -74,7 +101,7 @@ provides functions (aka `composables`) to trigger queries and mutations.
 ### ➡️ Queries
 
 ```js
-// @/composables/api.ts
+// src/composables/main.ts
 import {provideApolloClient, useQuery} from "@vue/apollo-composable";
 import {apolloClient} from "@/composables/apollo";
 import {GET_CURRENT_USER} from "@/composables/graphql";
@@ -87,7 +114,7 @@ export function getCurrentUser () {
 
 ```vue
 <script setup lang="ts">
-// @/pages/user.vue
+// src/pages/user.vue
 import {getCurrentUser} from "@/composables/api";
 
 const {
@@ -107,7 +134,7 @@ loading, // a boolean indicating if data are loading
 ### ➡️ Mutations
 
 ```js
-// @/composables/api.ts
+// src/composables/main.ts
 import {provideApolloClient, useMutation} from "@vue/apollo-composable";
 import {apolloClient} from "@/composables/apollo";
 import {LOGIN} from "@/composables/graphql";
@@ -125,7 +152,7 @@ export function authenticateOneUser () {
 
 ```vue
 <script setup lang="ts">
-// @/pages/login.vue
+// src/pages/login.vue
 import {authenticateOneUser} from "@/composables/api";
 import {ref} from "vue";
 import {useRouter} from "vue-router";
@@ -164,7 +191,7 @@ client inside a basic data loader to retrieve data on page load.
 
 ```vue
 <script lang="ts">
-  // @/pages/products.vue
+  // src/pages/products.vue
   import {defineBasicLoader} from 'unplugin-vue-router/data-loaders/basic'
   import {apolloClient} from "@/composables/apollo";
   import {GET_PRODUCTS} from "@/composables/graphql";

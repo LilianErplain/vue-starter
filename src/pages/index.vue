@@ -1,6 +1,6 @@
 <script lang="ts">
 import {defineBasicLoader} from 'unplugin-vue-router/data-loaders/basic'
-import {getOneUser} from "@/composables/api";
+import {getOneUser} from "@/composables/api/main";
 
 export const useUserData = defineBasicLoader('/', async (to) => {
   return await getOneUser(to.query.id)
@@ -9,6 +9,14 @@ export const useUserData = defineBasicLoader('/', async (to) => {
 
 <script setup lang="ts">
 import {useRouteQuery} from "@/composables/router";
+import {definePage} from "unplugin-vue-router/runtime";
+
+definePage({
+  name: 'home',
+  meta: {
+    layout: 'default',
+  },
+});
 
 const currentId = useRouteQuery<number>('id', {
   format: (v) => {

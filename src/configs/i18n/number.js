@@ -1,7 +1,5 @@
-import {Language} from "@/configs/i18n/i18n";
-
 export const numberFormats = {
-  [Language.ENGLISH]: {
+  'en': {
     currency: {
       style: 'currency', currency: 'USD', notation: 'standard'
     },
@@ -12,7 +10,7 @@ export const numberFormats = {
       style: 'percent', useGrouping: false
     }
   },
-  [Language.FRENCH]: {
+  'fr': {
     currency: {
       style: 'currency', currency: 'JPY', useGrouping: true, currencyDisplay: 'symbol'
     },

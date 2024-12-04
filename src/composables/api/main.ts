@@ -1,8 +1,6 @@
 import {provideApolloClient, useMutation, useQuery} from "@vue/apollo-composable";
 import {apolloClient} from "@/composables/apollo";
-import gql from "graphql-tag";
-import {ref} from "vue";
-import {GET_CURRENT_USER, GET_PRODUCTS, LOGIN} from "@/composables/graphql";
+import {GET_CURRENT_USER, GET_PRODUCTS, LOGIN} from "@/composables/graphql/main";
 
 export async function getOneUser (id: string|number) {
     const res = await fetch(`https://jsonplaceholder.typicode.com/users/${id}`)
